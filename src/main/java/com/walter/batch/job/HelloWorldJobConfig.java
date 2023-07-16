@@ -45,12 +45,12 @@ public class HelloWorldJobConfig {
 	@StepScope
 	@Bean
 	public Tasklet helloWorldTasklet() {
-		return new Tasklet() {
-			@Override
-			public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-				System.out.println("Hello World Spring Batch");
-				return RepeatStatus.FINISHED;
-			}
+		return (contribution, chunkContext) -> {
+			final String nameParameter = (String) chunkContext.getStepContext()
+															  .getJobParameters()
+															  .get("name");
+			System.out.println(String.format("Hello World! Spring Batch -----> %s", nameParameter));
+			return RepeatStatus.FINISHED;
 		};
 	}
 }
