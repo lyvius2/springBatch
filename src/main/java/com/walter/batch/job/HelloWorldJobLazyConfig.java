@@ -1,5 +1,6 @@
 package com.walter.batch.job;
 
+import com.walter.batch.util.JobLoggerListener;
 import com.walter.batch.util.ParameterValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -34,10 +35,10 @@ public class HelloWorldJobLazyConfig {
 
 	@Bean
 	public Job job() {
-		return new JobBuilder("helloWorldLazyJob", jobRepository)
-																	   .start(step1())
+		return new JobBuilder("helloWorldLazyJob", jobRepository).start(step1())
 																	   .validator(validator())
 																	   .incrementer(new RunIdIncrementer())
+																	   .listener(new JobLoggerListener())
 																	   .build();
 	}
 
