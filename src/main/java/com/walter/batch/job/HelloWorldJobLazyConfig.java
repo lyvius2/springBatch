@@ -1,5 +1,6 @@
 package com.walter.batch.job;
 
+import com.walter.batch.tasklet.HelloWorld;
 import com.walter.batch.util.JobLoggerListener;
 import com.walter.batch.util.ParameterValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,7 @@ public class HelloWorldJobLazyConfig {
 	@Bean
 	public Job job() {
 		return new JobBuilder("helloWorldLazyJob", jobRepository).start(step1())
+																	   .next(step2())
 																	   .validator(validator())
 																	   .incrementer(new RunIdIncrementer())
 																	   .listener(new JobLoggerListener())
@@ -46,6 +48,12 @@ public class HelloWorldJobLazyConfig {
 	@Bean
 	public Step step1() {
 		return new StepBuilder("step1", jobRepository).tasklet(helloWorldLazyTasklet(null, null), transactionManager)
+															.build();
+	}
+
+	@Bean
+	public Step step2() {
+		return new StepBuilder("step2", jobRepository).tasklet(new HelloWorld(), transactionManager)
 															.build();
 	}
 
