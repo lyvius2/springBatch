@@ -1,5 +1,6 @@
 package com.walter.batch.job;
 
+import com.walter.batch.remote.sample.SampleClient;
 import com.walter.batch.util.PojoService;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
