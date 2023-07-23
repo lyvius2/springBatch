@@ -3,6 +3,7 @@ package com.walter.batch.job;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
@@ -27,7 +28,8 @@ public class DefaultChunkJobConfig {
 
 	@Bean
 	public Job chunkJob() {
-		return new JobBuilder("chunkJob", jobRepository).start(chunkStep())
+		return new JobBuilder("chunkJob", jobRepository).incrementer(new RunIdIncrementer())
+															  .start(chunkStep())
 															  .build();
 	}
 

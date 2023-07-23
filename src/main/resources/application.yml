@@ -15,6 +15,7 @@ spring:
     password: password1234
   jpa:
     show-sql: true
+    generate-ddl: true
   cloud:
     openfeign:
       circuitbreaker:
