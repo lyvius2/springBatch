@@ -61,7 +61,7 @@ public class ReadDataAndCallApiJobConfig {
 		return users -> {
 			for (UserEntity user : users) {
 				final User returnMessage = sampleClient.registerUser(user.getId());
-				System.out.println("Registered ID : " + user.getId() + ", " + user.getName());
+				System.out.println("Registered ID : " + returnMessage.getId() + ", " + returnMessage.getName());
 			}
 		};
 	}
