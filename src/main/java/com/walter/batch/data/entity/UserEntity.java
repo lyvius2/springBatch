@@ -7,11 +7,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
+import java.io.Serializable;
+
+@Getter
 @SequenceGenerator(name = "userSeqGenerator", sequenceName = "userSeq", initialValue = 1, allocationSize = 1)
 @Table(name = "user")
 @Entity
-public class UserEntity {
+public class UserEntity implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSeqGenerator")
 	private long id;

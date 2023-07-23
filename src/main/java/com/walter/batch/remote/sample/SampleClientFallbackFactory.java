@@ -18,6 +18,12 @@ public class SampleClientFallbackFactory implements FallbackFactory<SampleClient
 				log.error("Exception at SampleClient.getUsers : {}", cause);
 				return List.of();
 			}
+
+			@Override
+			public User registerUser(long id) {
+				log.error("Exception at SampleClient.registerUser : {}, {}", id, cause);
+				return null;
+			}
 		};
 	}
 }
