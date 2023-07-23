@@ -4,6 +4,7 @@ import com.walter.batch.data.entity.UserEntity;
 import com.walter.batch.data.repository.UserRepository;
 import com.walter.batch.remote.sample.SampleClient;
 import com.walter.batch.remote.sample.dto.User;
+import com.walter.batch.util.LoggingStepStartStopListener;
 import com.walter.batch.util.RandomChunkSizePolicy;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -45,6 +46,7 @@ public class ReadDataAndCallApiJobConfig {
 		return new StepBuilder("readDataAndCallApiStep", jobRepository).<UserEntity, UserEntity>chunk(randomChunkSizePolicy(), transactionManager)
 																			 .reader(userItemReader())
 																			 .writer(userItemWriter())
+																			 .listener(new LoggingStepStartStopListener())
 																			 .build();
 	}
 
