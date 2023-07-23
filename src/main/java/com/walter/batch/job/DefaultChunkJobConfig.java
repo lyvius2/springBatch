@@ -2,12 +2,17 @@ package com.walter.batch.job;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.support.ListItemReader;
+import org.springframework.batch.repeat.CompletionPolicy;
+import org.springframework.batch.repeat.policy.CompositeCompletionPolicy;
+import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
+import org.springframework.batch.repeat.policy.TimeoutTerminationPolicy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -35,7 +40,7 @@ public class DefaultChunkJobConfig {
 
 	@Bean
 	public Step chunkStep() {
-		return new StepBuilder("chunkStep", jobRepository).<String, String>chunk(1000, transactionManager)
+		return new StepBuilder("chunkStep", jobRepository).<String, String>chunk(completionPolicy(), transactionManager)
 																.reader(itemReader())
 																.writer(itemWriter())
 																.build();
@@ -57,5 +62,12 @@ public class DefaultChunkJobConfig {
 				System.out.println(">> current item : " + item);
 			}
 		};
+	}
+
+	@Bean
+	public CompletionPolicy completionPolicy() {
+		final CompositeCompletionPolicy policy = new CompositeCompletionPolicy();
+		policy.setPolicies(new CompletionPolicy[]{new TimeoutTerminationPolicy(3), new SimpleCompletionPolicy(1000)});
+		return policy;
 	}
 }
